@@ -3,6 +3,7 @@ import Layout from "./components/ui/Layout";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Profile from "./pages/profile/Profile";
 
 function App() {
 
@@ -14,7 +15,7 @@ function App() {
             <Route path="register" element={<Register />}></Route>
           </Route>
           <Route path="/profile">
-              <Route index element={<>Profile page</>}></Route>
+              <Route index element={<Profile />}></Route>
           </Route>
           <Route path="*"></Route>
       </Routes>
