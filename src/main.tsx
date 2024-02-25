@@ -4,14 +4,15 @@ import App from "./App.tsx";
 import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
 import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <NextUIProvider>
       <BrowserRouter>
-        <main className="light text-foreground bg-background p-24">
+        <ThemeProvider>
           <App />
-        </main>
+        </ThemeProvider>
       </BrowserRouter>
     </NextUIProvider>
   </React.StrictMode>
