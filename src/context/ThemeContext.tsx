@@ -17,7 +17,7 @@ function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <main className={clsx("text-foreground bg-background p-6 md:p-12 lg:p-12", theme)}>
+      <main className={clsx("text-foreground bg-background p-6 md:p-12 lg:p-12 min-w-[479px]", theme)}>
         {children}
       </main>
     </ThemeContext.Provider>
