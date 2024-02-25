@@ -16,6 +16,7 @@ function App() {
           <Route path="/profile">
               <Route index element={<>Profile page</>}></Route>
           </Route>
+          <Route path="*"></Route>
       </Routes>
   )
 }

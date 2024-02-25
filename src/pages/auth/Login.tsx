@@ -24,7 +24,7 @@ function Login() {
       email: "",
       password: "",
     },
-    resolver: zodResolver(loginSchema)
+    resolver: zodResolver(loginSchema),
   });
 
   const onSubmit: SubmitHandler<TLoginSchema> = async (formData) => {
@@ -64,8 +64,18 @@ function Login() {
               isInvalid={!!errors.password}
               errorMessage={!!errors.password && errors.password.message}
               endContent={
-                <Button isIconOnly variant="light" className="focus:outline-none" type="button" onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? (<EyeOff color="gray" />) : (<Eye color="gray" />)}
+                <Button
+                  isIconOnly
+                  variant="light"
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff color="gray" />
+                  ) : (
+                    <Eye color="gray" />
+                  )}
                 </Button>
               }
               {...field}
@@ -87,13 +97,13 @@ function Login() {
           isDisabled={isSubmitting}
           isLoading={isSubmitting}
         >
-          Login
+          {isSubmitting ? "Logging in..." : "Login"}
         </Button>
       </form>
       <p>
         Don't you have an account?{" "}
         <Link
-          to="/auth/register"
+          to="/register"
           className="text-blue-500 underline hover:text-blue-600"
         >
           Register now for free!
@@ -104,4 +114,3 @@ function Login() {
 }
 
 export default Login;
-
