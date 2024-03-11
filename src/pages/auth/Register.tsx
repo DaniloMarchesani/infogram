@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, Controller, SubmitHandler, set } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { TRegisterSchema, registerSchema } from "../../lib/validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
@@ -27,8 +27,8 @@ function Register() {
       passwordConfirm: "",
       userName: "",
     },
-    resolver: zodResolver(registerSchema),
     mode: "onBlur",
+    resolver: zodResolver(registerSchema),
   });
 
   const onSubmit: SubmitHandler<TRegisterSchema> = async (formData) => {

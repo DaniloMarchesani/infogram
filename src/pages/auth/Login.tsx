@@ -16,9 +16,7 @@ function Login() {
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
-    setError,
   } = useForm<TLoginSchema>({
     defaultValues: {
       email: "",

@@ -1,34 +1,40 @@
-import React, { Suspense, useEffect } from 'react'
-import Logo from '../../components/ui/Logo'
-import { Inbox, Send } from 'lucide-react'
-import { Avatar, Skeleton } from '@nextui-org/react'
-import { faker } from "@faker-js/faker"
+import { Suspense } from "react";
+import Logo from "../../components/ui/Logo";
+import { Inbox, Send } from "lucide-react";
+import { Avatar, Skeleton } from "@nextui-org/react";
+import { faker } from "@faker-js/faker";
+import ImageWithFallback from "../../components/ui/ImageWithFallback";
 
 function Profile() {
   return (
-    <div >
-        <header>
-            <nav className='flex justify-around items-center'>
-                <Logo />
-                <div className='flex items-center justify-center gap-4'>
-                <Send  className='cursor-pointer size-7'/>
-                <Inbox className='cursor-pointer size-7' />
-                <Suspense fallback={<Skeleton className='cursor-pointer size-7' />}>
-                    <Avatar src={faker.image.people()} className='cursor-pointer size-7' />
-                </Suspense>
-                </div>
-            </nav>
-        </header>
+    <div>
+      <header>
+        <nav className="flex justify-around items-center">
+          <Logo />
+          <div className="flex items-center justify-center gap-4">
+            <Send className="cursor-pointer size-7" />
+            <Inbox className="cursor-pointer size-7" />
+            <Suspense fallback={<Skeleton className="cursor-pointer size-7" />}>
+              <Avatar
+                src={faker.image.avatar()}
+                className="cursor-pointer size-7"
+              />
+            </Suspense>
+          </div>
+        </nav>
+      </header>
 
-        <section className='flex flex-col items-center justify-center'>
-            <div className='size-96 bg-gray-300'>
-                <p>
-                    here is the profile page
-                </p>
+      <section className="flex flex-col items-center justify-center container mx-auto p-24">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2">
+          {Array.from({ length: 9 }).map((_, index) => (
+            <div key={index} className="p-3 lg:p-4 drop-shadow-md">
+              <ImageWithFallback imgUrl={faker.image.url()} />
             </div>
-        </section>
+          ))}
+        </div>
+      </section>
     </div>
-  )
+  );
 }
 
-export default Profile
+export default Profile;
