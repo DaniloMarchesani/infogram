@@ -8,8 +8,8 @@ function ImageWithFallback( {imgUrl}: {imgUrl: string}) {
     const [isLoaded, setIsLoaded] = React.useState(false);
 
   return (
-        <Skeleton className="rounded-2xl" isLoaded={isLoaded}>
-            <div className='rounded-2xl overflow-hidden cursor-pointer'>
+        <Skeleton className="rounded-2xl drop-shadow-md" isLoaded={isLoaded}>
+            <div className='rounded-2xl overflow-hidden cursor-pointer drop-shadow-md'>
                 <Image src={imgUrl} alt="random"  onLoad={() => setIsLoaded(!isLoaded)}/>
             </div>
         </Skeleton>

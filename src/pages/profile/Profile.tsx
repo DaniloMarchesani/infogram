@@ -1,11 +1,18 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import Logo from "../../components/ui/Logo";
 import { Inbox, Send } from "lucide-react";
 import { Avatar, Skeleton } from "@nextui-org/react";
 import { faker } from "@faker-js/faker";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
+import UserDetails from "../../components/profile/UserDetails";
 
 function Profile() {
+
+  useEffect(() => {
+    console.log(localStorage.getItem("ACCESS_TOKEN"));
+  }, []);
+
+
   return (
     <div>
       <header>
@@ -24,6 +31,8 @@ function Profile() {
         </nav>
       </header>
 
+      <UserDetails />
+
       <section className="flex flex-col items-center justify-center container mx-auto p-24">
         <div className="grid lg:grid-cols-3 md:grid-cols-2">
           {Array.from({ length: 9 }).map((_, index) => (
@@ -33,6 +42,10 @@ function Profile() {
           ))}
         </div>
       </section>
+
+      <footer className="flex items-center justify-center">
+        <p>@Instabasic Made with love by me</p>
+      </footer>
     </div>
   );
 }

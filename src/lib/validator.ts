@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
 export const loginSchema = z.object({
-    email: z.string().email().min(5, { message: "Email is required"}),
+    username: z.string().min(5, { message: "Username is required"}),
     password: z.string().min(8),
     });
 
 export type TLoginSchema = z.infer<typeof loginSchema>;
 
 export const registerSchema = z.object({
-    userName: z.string().min(3, {message: "Username is required"}),
+    username: z.string().min(3, {message: "Username is required"}),
     email: z.string().email(),
     password: z.string().min(8, {message: "The password must be at least 8 characters long"}),
     passwordConfirm: z.string()

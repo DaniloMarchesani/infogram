@@ -1,19 +1,25 @@
 import { useState } from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, Controller, SubmitHandler, set } from "react-hook-form";
 import { TRegisterSchema, registerSchema } from "../../lib/validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
 import { Eye, EyeOff, XCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 /* 
 * SUCCESS COMPONENT is at the bottom of the file.
 */
 
+const { VITE_BACKEND_URL } = import.meta.env;
+
+
 function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [success, setSuccess] = useState(false);
+
+
 
   const {
     control,
@@ -25,7 +31,7 @@ function Register() {
       email: "",
       password: "",
       passwordConfirm: "",
-      userName: "",
+      username: "",
     },
     mode: "onBlur",
     resolver: zodResolver(registerSchema),
@@ -33,8 +39,22 @@ function Register() {
 
   const onSubmit: SubmitHandler<TRegisterSchema> = async (formData) => {
     console.log(formData);
-    setSuccess(!success);
     //FIXME: Add register logic here and finish the form submission.
+
+    try {
+      const response = await axios.post(`${VITE_BACKEND_URL}/auth/register`, formData);
+      if(response.data.error) {
+        setError("root", {
+          message: response.data.error
+        })
+      }
+      setSuccess(true);
+    } catch (error: any) {
+      console.error(error);
+      setError("root", {
+        message: error.response.data.error
+      })
+    }
   };
 
   return (
@@ -49,14 +69,14 @@ function Register() {
             className="flex flex-col gap-5 w-1/2"
           >
             <Controller
-              name="userName"
+              name="username"
               control={control}
               render={({ field }) => (
                 <Input
                   type="text"
                   label="username"
-                  isInvalid={!!errors.userName}
-                  errorMessage={!!errors.userName && errors.userName.message}
+                  isInvalid={!!errors.username}
+                  errorMessage={!!errors.username && errors.username.message}
                   {...field}
                 ></Input>
               )}

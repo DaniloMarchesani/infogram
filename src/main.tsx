@@ -5,15 +5,16 @@ import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <NextUIProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <ThemeProvider>
           <App />
         </ThemeProvider>
-      </BrowserRouter>
-    </NextUIProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

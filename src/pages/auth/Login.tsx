@@ -6,20 +6,28 @@ import { TLoginSchema, loginSchema } from "../../lib/validator";
 import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import IUser from "../../interfaces/User";
+import IProfile from "../../interfaces/Profile";
+import { useAuth } from "../../context/AuthContext";
 
 function Login() {
   //state for password visibility
   const [showPassword, setShowPassword] = useState(false);
+  const { setProfile, setAsLogged} = useAuth();
 
   const navigate = useNavigate();
+
+  const { VITE_BACKEND_URL } = import.meta.env;
 
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setError
   } = useForm<TLoginSchema>({
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
     resolver: zodResolver(loginSchema),
@@ -27,8 +35,24 @@ function Login() {
 
   const onSubmit: SubmitHandler<TLoginSchema> = async (formData) => {
     console.log(formData);
-    navigate("/");
     //FIXME: Add login logic here and finish the form submission
+    axios.post<IUser>(`${VITE_BACKEND_URL}/auth/login`, formData).then( response => {
+      localStorage.setItem("ACCESS_TOKEN", response.data.token);
+      axios.get<IProfile>(`${VITE_BACKEND_URL}/profile/${formData.username}`, {
+        headers: {
+          Authorization: `Bearer ${response.data.token}`
+        }
+      }).then( response => {
+          setProfile(response.data);
+          navigate("/profile");
+      })
+    }).catch( error => {
+      console.error(error);
+      setError("root", {
+        message: "Invalid username or password. Please try again."
+      })
+    })
+    
   };
 
   return (
@@ -40,13 +64,13 @@ function Login() {
         className="flex flex-col gap-8 w-1/2"
       >
         <Controller
-          name="email"
+          name="username"
           control={control}
           render={({ field }) => (
             <Input
-              label="email"
-              isInvalid={!!errors.email}
-              errorMessage={!!errors.email && errors.email.message}
+              label="username"
+              isInvalid={!!errors.username}
+              errorMessage={!!errors.username && errors.username.message}
               {...field}
             />
           )}
