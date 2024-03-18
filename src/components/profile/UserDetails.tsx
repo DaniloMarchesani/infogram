@@ -20,7 +20,7 @@ const UserDetails = () => {
                             isBordered
                             as="button"
                             className="transition-transform w-18 h-18 sm:w-24 sm:h-24"
-                            src={`${VITE_BACKEND_URL}/${profile?.avatarUrl}`}
+                            src={undefined}
                             showFallback
                             fallback={<UserCircleIcon className="size-20 text-gray-100" />}
                         />

@@ -20,14 +20,13 @@ function App() {
   //UseEffect to check if the user is logged in
   useEffect(() => {
     const token = localStorage.getItem("ACCESS_TOKEN");
-
     if (!token) { //If there is no token, redirect to login page
       if (location.pathname === "/register") return;
       return navigate("/login");
     }
 
     axios //If there is a token, check if it is valid
-      .get<IUser>(`${VITE_BACKEND_URL}/user`, {
+      .get<IUser>(`${VITE_BACKEND_URL}/user/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -35,7 +34,7 @@ function App() {
       .then((response) => { //If the token is valid, set the user as logged in
         setAsLogged && setAsLogged({ ...response.data, token });
         axios //Get the user profile
-          .get(`${VITE_BACKEND_URL}/profile`, {
+          .get(`${VITE_BACKEND_URL}/profile/`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -46,7 +45,6 @@ function App() {
       }) //If the token is invalid, redirect to login page
       .catch((error) => {
         console.log(error);
-        logout();
         navigate("/login");
       });
   }, []);
