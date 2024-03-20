@@ -1,10 +1,13 @@
 
 import { Avatar, Button } from "@nextui-org/react";
 import { useAuth } from "../../context/AuthContext";
-import { UserCircleIcon } from "lucide-react";
+import { Settings, UserCircleIcon } from "lucide-react";
+import { useState } from "react";
+import IUser from "../../interfaces/User";
+import IProfile from "../../interfaces/Profile";
 
-const UserDetails = () => {
-    const { user, profile } = useAuth();
+const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
+
     /* const {
         state: { posts },
     } = useStore(); */
@@ -27,7 +30,7 @@ const UserDetails = () => {
 
                     {profile ? (
                         <div className="flex flex-col gap-3">
-                            <h1 className="text-xl sm:text-2xl font-semibold">{profile?.userName}</h1>
+                            <h1 className="text-xl sm:text-2xl font-semibold">{profile?.firstName} {profile?.lastName}</h1>
                             <div className="flex gap-3">
                                 <div className="flex flex-col">
                                     <span>Followers</span>
@@ -67,24 +70,29 @@ const UserDetails = () => {
                             </div>
                         </div>
                     )}
+                
+
+                <div>
+                    <Settings />
+                </div>
                 </div>
 
                 {/* Actions */}
-                {user && (
+                {/* {user && (
                     <div className="flex flex-none">
                         <Button
                             className="btn btn-primary min-h-0 h-auto py-2 flex"
                             onClick={() => false}>
-                            {/* <Cog6ToothIcon className="w-5 h-5" /> */}
+                            
                             Edit Profile
                         </Button>
-                        {/* <button className="btn btn-primary min-h-0 h-auto py-3">Follow</button> */}
+                        <button className="btn btn-primary min-h-0 h-auto py-3">Follow</button> 
                     </div>
-                )}
+                )} */}
             </div>
 
             {/* Full name and bio */}
-            {user && (
+            {/* {user && (
                 <div className="w-full flex flex-col gap-2">
                     <strong>{`${profile?.firstName} ${profile?.lastName}`}</strong>
                     <p
@@ -92,7 +100,7 @@ const UserDetails = () => {
                             __html: profile?.bio || "",
                         }}></p>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

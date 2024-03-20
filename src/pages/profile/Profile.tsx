@@ -1,15 +1,24 @@
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Logo from "../../components/ui/Logo";
 import { Inbox, Send } from "lucide-react";
-import { Avatar, Skeleton } from "@nextui-org/react";
+import { Avatar, Button, Skeleton } from "@nextui-org/react";
 import { faker } from "@faker-js/faker";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
 import UserDetails from "../../components/profile/UserDetails";
+import { useAuth } from "../../context/AuthContext";
 
 function Profile() {
 
+  const [loading, setLoading] = useState(true);
+
+  //state for all posts
+  const [posts, setPosts] = useState([]);
+
+  const { user, profile, logout } = useAuth();
+  
+
   useEffect(() => {
-    console.log(localStorage.getItem("ACCESS_TOKEN"));
+    //console.log(localStorage.getItem("ACCESS_TOKEN"));
   }, []);
 
 
@@ -28,10 +37,11 @@ function Profile() {
               />
             </Suspense>
           </div>
+          <Button color="danger" onClick={() => logout()}>Logout</Button>
         </nav>
       </header>
 
-      <UserDetails />
+      {user && profile && <UserDetails user={user} profile={profile}/>}
 
       <section className="flex flex-col items-center justify-center container mx-auto p-24">
         <div className="grid lg:grid-cols-3 md:grid-cols-2">

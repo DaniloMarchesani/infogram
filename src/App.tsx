@@ -32,14 +32,16 @@ function App() {
         },
       })
       .then((response) => { //If the token is valid, set the user as logged in
+        console.log("first get IUser then: ", response.data)
         setAsLogged && setAsLogged({ ...response.data, token });
         axios //Get the user profile
-          .get(`${VITE_BACKEND_URL}/profile/`, {
+          .get(`${VITE_BACKEND_URL}/profile/${response.data.userName}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
           .then((response) => { //Set the user profile
+            //console.log("second get profile then: ", response.data)
             setProfile(response.data);
           });
       }) //If the token is invalid, redirect to login page
