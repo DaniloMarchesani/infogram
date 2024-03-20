@@ -2,9 +2,10 @@
 import { Avatar, Button } from "@nextui-org/react";
 import { useAuth } from "../../context/AuthContext";
 import { Settings, UserCircleIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IUser from "../../interfaces/User";
 import IProfile from "../../interfaces/Profile";
+import axios from "axios";
 
 const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
 
@@ -12,7 +13,10 @@ const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
         state: { posts },
     } = useStore(); */
     //const { openModal } = useModal();
+    const [isFollowing, setIsFollowing] = useState(0);
+    const [isFollowed, setIsFollowed] = useState(0);
     const { VITE_BACKEND_URL } = import.meta.env;
+
 
     return (
         <div className="flex flex-col justify-center items-center gap-8 p-12 mt-4">

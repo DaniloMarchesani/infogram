@@ -5,7 +5,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Profile from "./pages/profile/Profile";
 import { useAuth } from "./context/AuthContext";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import axios from "axios";
 import IUser from "./interfaces/User";
 import { NextUIProvider } from "@nextui-org/react";
@@ -13,16 +13,17 @@ import { NextUIProvider } from "@nextui-org/react";
 const { VITE_BACKEND_URL } = import.meta.env;
 
 function App() {
-  const { loading: authLoading, logout, setAsLogged, setProfile } = useAuth();
+  const { loading: authLoading, logout, setAsLogged, setProfile, profile, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   //UseEffect to check if the user is logged in
   useEffect(() => {
     const token = localStorage.getItem("ACCESS_TOKEN");
-    if (!token) { //If there is no token, redirect to login page
-      if (location.pathname === "/register") return;
-      return navigate("/login");
+    if (!token) {
+      if(location.pathname === "/register") return;
+      navigate("/login");
+      return;
     }
 
     axios //If there is a token, check if it is valid
@@ -33,15 +34,15 @@ function App() {
       })
       .then((response) => { //If the token is valid, set the user as logged in
         console.log("first get IUser then: ", response.data)
-        setAsLogged && setAsLogged({ ...response.data, token });
+        setAsLogged && setAsLogged({ ...response.data, token: token! });
         axios //Get the user profile
-          .get(`${VITE_BACKEND_URL}/profile/${response.data.userName}`, {
+          .get(`${VITE_BACKEND_URL}/profile/${response.data.username}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
           .then((response) => { //Set the user profile
-            //console.log("second get profile then: ", response.data)
+            console.log("second get profile then: ", response.data)
             setProfile(response.data);
           });
       }) //If the token is invalid, redirect to login page
@@ -50,7 +51,6 @@ function App() {
         navigate("/login");
       });
   }, []);
-
   return (
     <NextUIProvider navigate={navigate}>
       <Routes>

@@ -7,18 +7,36 @@ import ImageWithFallback from "../../components/ui/ImageWithFallback";
 import UserDetails from "../../components/profile/UserDetails";
 import { useAuth } from "../../context/AuthContext";
 import DropdownAvatar from "../../components/ui/DropdownAvatar";
+import axios from "axios";
+import { api } from "../../context/AuthContext";
+import IPost from "../../interfaces/Post";
+
+const { VITE_BACKEND_URL } = import.meta.env;
 
 function Profile() {
   const [loading, setLoading] = useState(true);
 
   //state for all posts
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<IPost | null>(null);
 
   const { user, profile, logout } = useAuth();
 
   useEffect(() => {
     //console.log(localStorage.getItem("ACCESS_TOKEN"));
-  }, []);
+    console.log(profile);
+    axios
+      .get(`${VITE_BACKEND_URL}/post/all/${profile?.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN ")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [profile]);
 
   return (
     <div>
@@ -37,11 +55,11 @@ function Profile() {
 
       <section className="flex flex-col items-center justify-center container mx-auto p-24">
         <div className="grid lg:grid-cols-3 md:grid-cols-2">
-          {Array.from({ length: 9 }).map((_, index) => (
+          {/* {Array.from({ length: 9 }).map((_, index) => (
             <div key={index} className="p-3 lg:p-4 drop-shadow-md">
               <ImageWithFallback imgUrl={faker.image.url()} />
             </div>
-          ))}
+          ))} */}
         </div>
       </section>
 
