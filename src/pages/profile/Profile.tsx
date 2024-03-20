@@ -6,21 +6,19 @@ import { faker } from "@faker-js/faker";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
 import UserDetails from "../../components/profile/UserDetails";
 import { useAuth } from "../../context/AuthContext";
+import DropdownAvatar from "../../components/ui/DropdownAvatar";
 
 function Profile() {
-
   const [loading, setLoading] = useState(true);
 
   //state for all posts
   const [posts, setPosts] = useState([]);
 
   const { user, profile, logout } = useAuth();
-  
 
   useEffect(() => {
     //console.log(localStorage.getItem("ACCESS_TOKEN"));
   }, []);
-
 
   return (
     <div>
@@ -30,18 +28,12 @@ function Profile() {
           <div className="flex items-center justify-center gap-4">
             <Send className="cursor-pointer size-7" />
             <Inbox className="cursor-pointer size-7" />
-            <Suspense fallback={<Skeleton className="cursor-pointer size-7" />}>
-              <Avatar
-                src={faker.image.avatar()}
-                className="cursor-pointer size-7"
-              />
-            </Suspense>
+            <DropdownAvatar />
           </div>
-          <Button color="danger" onClick={() => logout()}>Logout</Button>
         </nav>
       </header>
 
-      {user && profile && <UserDetails user={user} profile={profile}/>}
+      {user && profile && <UserDetails user={user} profile={profile} />}
 
       <section className="flex flex-col items-center justify-center container mx-auto p-24">
         <div className="grid lg:grid-cols-3 md:grid-cols-2">
