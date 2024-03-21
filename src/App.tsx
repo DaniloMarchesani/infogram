@@ -9,6 +9,7 @@ import { useEffect, useMemo } from "react";
 import axios from "axios";
 import IUser from "./interfaces/User";
 import { NextUIProvider } from "@nextui-org/react";
+import CreateProfile from "./pages/profile/CreateProfile";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -61,6 +62,7 @@ function App() {
         </Route>
         <Route path="/profile">
           <Route index element={<Profile />}></Route>
+          <Route path="create" element={<CreateProfile />}></Route>
         </Route>
         <Route path="*"></Route>
       </Routes>
