@@ -194,9 +194,9 @@ const SuccessContent = () => {
     <div className="flex flex-col items-center bg-green-500/20 p-10 rounded-xl gap-10">
       <h1 className="text-3xl font-bold">Sign up Successfully!</h1>
       <p>Login in now for get into your account!</p>
-      <Button color="success">
-        <Link to={"/login"}>Go to back to login!</Link>
-      </Button>
+      
+        <Link to={"/login"}><Button color="success">Go to back to login!</Button></Link>
+      
     </div>
   );
 };
