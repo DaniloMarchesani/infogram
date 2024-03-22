@@ -5,7 +5,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Profile from "./pages/profile/Profile";
 import { useAuth } from "./context/AuthContext";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import IUser from "./interfaces/User";
 import { NextUIProvider } from "@nextui-org/react";
@@ -17,6 +17,8 @@ function App() {
   const { loading: authLoading, logout, setAsLogged, setProfile, profile, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [profileUsername, setProfileUsername] = useState<string>("");
 
   //UseEffect to check if the user is logged in
   useEffect(() => {
@@ -44,6 +46,7 @@ function App() {
           })
           .then((response) => { //Set the user profile
             console.log("second get profile then: ", response.data)
+            setProfileUsername(response.data.username);
             setProfile(response.data);
           });
       }) //If the token is invalid, redirect to login page
@@ -62,7 +65,7 @@ function App() {
         </Route>
         <Route path="/profile">
           <Route index element={<Profile />}></Route>
-          <Route path="create" element={<CreateProfile />}></Route>
+          <Route path="create" element={<CreateProfile profile={profileUsername} />}></Route>
         </Route>
         <Route path="*"></Route>
       </Routes>
