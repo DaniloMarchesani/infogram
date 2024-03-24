@@ -8,8 +8,6 @@ import { useEffect, useState } from "react";
 import { TCreateProfileSchema, createProfileSchema } from "../../lib/validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
-import IProfile from "../../interfaces/Profile";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -33,7 +31,10 @@ function CreateProfile({ profile }: { profile: string }) {
     firstName: "",
     lastName: "",
     bio: "",
-    avatar: null,
+    day: 0,
+    month: 0,
+    year: 0,
+    /* avatar: null, */
   };
 
   const {
@@ -47,13 +48,19 @@ function CreateProfile({ profile }: { profile: string }) {
     resolver: zodResolver(createProfileSchema),
   }); //import the control and handleSubmit from the useForm hook.
 
+//DATAAAAA
+  /* const birthday = new Date("May 17, 1995"); 
+  console.log(birthday.toLocaleDateString());
+ */
+
   //Method for handle the submit of the form.
   const onSubmitForm: SubmitHandler<TCreateProfileSchema> = async (data) => {
-    data.avatar = avatarImage ? avatarImage.item(0) : null;
+    //data.avatar = avatarImage ? avatarImage.item(0) : null;
     
+
     try {
       const formData = new FormData();
-      formData.append("file", data.avatar as File);
+      formData.append("file", avatarImage?.item(0) as File);
       formData.append("profile", profile);
 
       setIsUploading(true);
@@ -70,15 +77,18 @@ function CreateProfile({ profile }: { profile: string }) {
           },
         })
         .then((res) => {
+
           console.log(res.data);
+          console.log(data);
+          
           //create the profile now!
-          axios.post(`${VITE_BACKEND_URL}/profile/`, data, {
+          /* axios.post(`${VITE_BACKEND_URL}/profile/`, data, {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
             },
           }).catch((error) => {
             console.log(error);
-          });
+          }); */
           setSuccess(true);
         })
         .catch((error) => {
@@ -139,6 +149,7 @@ function CreateProfile({ profile }: { profile: string }) {
                   {...field}
                   isInvalid={!!errors.firstName}
                   errorMessage={!!errors.firstName?.message}
+                  
                 />
               )}
             />
@@ -160,10 +171,34 @@ function CreateProfile({ profile }: { profile: string }) {
                 />
               )}
             />
-            {errors.firstName && (
+            {errors.bio && (
               <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
                 <XCircleIcon className="size-5" />
-                {errors.firstName.message}
+                {errors.bio.message}
+              </div>
+            )}
+
+            <Controller name="day" control={control} render={({field}) => (<Input label="dd" isInvalid={!!errors.day} errorMessage={!!errors.day?.message} {...field} type="number" />)} />
+            {errors.day && (
+              <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
+                <XCircleIcon className="size-5" />
+                {errors.day.message}
+              </div>
+            )}
+
+            <Controller name="month" control={control} render={({field}) => (<Input draggable="false" type="number" label="mm" isInvalid={!!errors.month} errorMessage={!!errors.month?.message} {...field} value={field.value.toString()} ></Input>)} />
+            {errors.month && (
+              <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
+                <XCircleIcon className="size-5" />
+                {errors.month.message}
+              </div>
+            )}
+
+            <Controller name="year" control={control} render={({field}) => (<Input type="number" label="yyyy" isInvalid={!!errors.year} errorMessage={!!errors.year?.message} {...field} value={field.value.toString()} ></Input>)} />
+            {errors.year && (
+              <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
+                <XCircleIcon className="size-5" />
+                {errors.year.message}
               </div>
             )}
 
@@ -219,12 +254,12 @@ function CreateProfile({ profile }: { profile: string }) {
                 </div>
               )}
 
-              {errors.avatar && (
+              {/* {errors.avatar && (
                 <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
                   {" "}
                   <XCircleIcon className="size-5" /> {errors.avatar.message}{" "}
                 </div>
-              )}
+              )} */}
             </div>
             {errors.root && (
               <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
