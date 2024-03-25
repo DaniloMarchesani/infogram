@@ -80,8 +80,17 @@ function CreateProfile({ profile }: { profile: string }) {
 
           console.log(res.data);
           console.log(data);
+
+          const { day, month, year } = data;
+          const birthday = new Date(`${month}/${day}/${year}`);
           
-          //create the profile now!
+          const profileData = {
+            ...data,
+            birthday,
+            avatar: res.data.url,
+          };
+
+          console.log(profileData);
           /* axios.post(`${VITE_BACKEND_URL}/profile/`, data, {
             headers: {
               "Content-Type": "application/json",

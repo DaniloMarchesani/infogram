@@ -7,9 +7,10 @@ import ImageWithFallback from "../../components/ui/ImageWithFallback";
 import UserDetails from "../../components/profile/UserDetails";
 import { useAuth } from "../../context/AuthContext";
 import DropdownAvatar from "../../components/ui/DropdownAvatar";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { api } from "../../context/AuthContext";
 import IPost from "../../interfaces/Post";
+
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -24,11 +25,8 @@ function Profile() {
   useEffect(() => {
     //console.log(localStorage.getItem("ACCESS_TOKEN"));
     console.log(profile);
-    axios
-      .get(`${VITE_BACKEND_URL}/post/all/${profile?.id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN ")}`,
-        },
+    api
+      .get<IPost[]>(`/post/all/${profile?.id}`, {
       })
       .then((response) => {
         console.log(response.data);

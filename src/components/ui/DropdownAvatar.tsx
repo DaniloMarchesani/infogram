@@ -12,9 +12,12 @@ import {
 import { faker } from "@faker-js/faker";
 import { useAuth } from "../../context/AuthContext";
 
+const { VITE_BASE_BACKEND_URL } = import.meta.env;
+
+
 function DropdownAvatar() {
 
-    const { logout } = useAuth();
+    const { logout, profile } = useAuth();
 
   return (
     <Dropdown>
@@ -26,7 +29,8 @@ function DropdownAvatar() {
               Open Menu
             </Button> */}
           <Avatar
-            src={faker.image.avatar()}
+            fallback={"...loading"}
+            src={`${VITE_BASE_BACKEND_URL}images${profile?.avatarUrl}`}
             className="cursor-pointer size-7"
           />
         </DropdownTrigger>

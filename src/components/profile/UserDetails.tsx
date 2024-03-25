@@ -27,7 +27,7 @@ const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
                             isBordered
                             as="button"
                             className="transition-transform w-18 h-18 sm:w-24 sm:h-24"
-                            src={undefined}
+                            src={"http://localhost:8080/images" + profile.avatarUrl}
                             showFallback
                             fallback={<UserCircleIcon className="size-20 text-gray-100" />}
                         />
@@ -35,6 +35,7 @@ const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
                     {profile ? (
                         <div className="flex flex-col gap-3">
                             <h1 className="text-xl sm:text-2xl font-semibold">{profile?.firstName} {profile?.lastName}</h1>
+                            {/* <img src={`http://localhost:8080/images/sticker-smash.jpeg`} alt="ciao" /> */}
                             <div className="flex gap-3">
                                 <div className="flex flex-col">
                                     <span>Followers</span>
