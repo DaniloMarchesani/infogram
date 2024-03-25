@@ -31,9 +31,9 @@ function CreateProfile({ profile }: { profile: string }) {
     firstName: "",
     lastName: "",
     bio: "",
-    day: 0,
-    month: 0,
-    year: 0,
+    day: "0",
+    month: "0",
+    year: "0",
     /* avatar: null, */
   };
 
@@ -178,11 +178,11 @@ function CreateProfile({ profile }: { profile: string }) {
               </div>
             )}
 
-            <Controller name="day" control={control} render={({field}) => (<Input label="dd" isInvalid={!!errors.day} errorMessage={!!errors.day?.message} {...field} type="number" />)} />
+            <Controller name="day" control={control} render={({field}) => (<Input label="dd" isInvalid={!!errors.day} errorMessage={!!errors.day?.message} {...field} type="text"  value={field.value.toString()}/>)} />
             {errors.day && (
               <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
                 <XCircleIcon className="size-5" />
-                {errors.day.message}
+                {errors.day.message?.toString()}
               </div>
             )}
 
@@ -190,15 +190,15 @@ function CreateProfile({ profile }: { profile: string }) {
             {errors.month && (
               <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
                 <XCircleIcon className="size-5" />
-                {errors.month.message}
+                {errors.month.message?.toString()}
               </div>
             )}
 
-            <Controller name="year" control={control} render={({field}) => (<Input type="number" label="yyyy" isInvalid={!!errors.year} errorMessage={!!errors.year?.message} {...field} value={field.value.toString()} ></Input>)} />
+            <Controller name="year" control={control} render={({field}) => (<Input type="number" label="yyyy" isInvalid={!!errors.year} errorMessage={!!errors.year?.message} {...field} /* value={field.value.toString()} */></Input>)} />
             {errors.year && (
               <div className="w-full bg-red-500/10 p-4 rounded-xl text-red-500 flex items-center justify-center gap-2">
                 <XCircleIcon className="size-5" />
-                {errors.year.message}
+                {errors.year.message?.toString()}
               </div>
             )}
 
