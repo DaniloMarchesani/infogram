@@ -19,6 +19,7 @@ function App() {
   const location = useLocation();
 
   const [profileUsername, setProfileUsername] = useState<string>("");
+  const [idProfile, setIdProfile] = useState<number | null>(null);
 
   //UseEffect to check if the user is logged in
   useEffect(() => {
@@ -47,6 +48,7 @@ function App() {
           .then((response) => { //Set the user profile
             console.log("second get profile then: ", response.data)
             setProfileUsername(response.data.username);
+            setIdProfile(response.data.id);
             setProfile(response.data);
           });
       }) //If the token is invalid, redirect to login page
@@ -65,7 +67,7 @@ function App() {
         </Route>
         <Route path="/profile">
           <Route index element={<Profile />}></Route>
-          <Route path="create" element={<CreateProfile profile={profileUsername} />}></Route>
+          <Route path="create" element={<CreateProfile profile={profileUsername}  id={idProfile!}/>}></Route>
         </Route>
         <Route path="*"></Route>
       </Routes>

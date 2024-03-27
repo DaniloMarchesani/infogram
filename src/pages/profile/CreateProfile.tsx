@@ -11,7 +11,7 @@ import axios from "axios";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
-function CreateProfile({ profile }: { profile: string }) {
+function CreateProfile({ profile, id }: { profile: string, id: number }) {
   //State for handle the avatar image
   const [avatarImage, setAvatarImage] = useState<FileList | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -63,6 +63,7 @@ function CreateProfile({ profile }: { profile: string }) {
       formData.append("file", avatarImage?.item(0) as File);
       formData.append("profile", profile);
 
+
       setIsUploading(true);
       axios
         .post(`${VITE_BACKEND_URL}/file/upload/avatar`, formData, {
@@ -82,22 +83,25 @@ function CreateProfile({ profile }: { profile: string }) {
           console.log(data);
 
           const { day, month, year } = data;
-          const birthday = new Date(`${month}/${day}/${year}`);
+          const birthday = new Date(`${month}/${day}/${year}`).getTime();
           
           const profileData = {
-            ...data,
+            username: profile,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            bio: data.bio,
             birthday,
-            avatar: res.data.url,
+            //avatar: res.data.url,
           };
 
-          console.log(profileData);
-          /* axios.post(`${VITE_BACKEND_URL}/profile/`, data, {
+          axios.put(`${VITE_BACKEND_URL}/profile/${id}`, profileData, {
             headers: {
               "Content-Type": "application/json",
             },
           }).catch((error) => {
             console.log(error);
-          }); */
+          });
+
           setSuccess(true);
         })
         .catch((error) => {
@@ -113,9 +117,6 @@ function CreateProfile({ profile }: { profile: string }) {
     }
   };
 
-  //FIXME: fix the stop propagation cause the input file doesnt work!
-
-  //BUG: implemente the date!!!
 
   return (
     <>
@@ -211,13 +212,13 @@ function CreateProfile({ profile }: { profile: string }) {
               </div>
             )}
 
-            <div className="flex flex-col items-center justify-center">
-              <p className="font-bold text-lg">Avatar image</p>
+            <div className="flex flex-col items-center justify-center mt-14">
+              <h3 className="font-bold text-2xl my-4">Avatar image</h3>
         
 
               {!isUploading && (
                 <label
-                  className="bg-default-200 max-w-[400px] rounded-full w-full aspect-square flex items-center justify-center flex-col gap-3 hover:bg-default-300 transition duration-200 group cursor-pointer overflow-hidden"
+                  className=" bg-default-200 max-w-[400px] rounded-full w-full aspect-square flex items-center justify-center flex-col gap-3 hover:bg-default-300 transition duration-200 group cursor-pointer overflow-hidden"
                   htmlFor="post-img"
                 >
                   <input
@@ -257,7 +258,7 @@ function CreateProfile({ profile }: { profile: string }) {
               {/* --------------------------------- */}
 
               {success && (
-                <div className="w-full bg-green-500/10 p-4 rounded-xl text-green-500 flex items-center justify-center gap-2">
+                <div className="mt-10 w-full bg-green-500/10 p-4 rounded-xl text-green-500 flex items-center justify-center gap-2">
                   {" "}
                   Profile created!{" "}
                 </div>
@@ -277,9 +278,11 @@ function CreateProfile({ profile }: { profile: string }) {
               </div>
             )}
           </div>
-          <Button color="primary" size="lg" type="submit">
-            Create Profile
-          </Button>
+          <div className="flex items-center justify-center mt-10">
+            <Button color="primary" size="lg" type="submit">
+              Create Profile
+            </Button>
+          </div>
         </form>
       </div>
     </>

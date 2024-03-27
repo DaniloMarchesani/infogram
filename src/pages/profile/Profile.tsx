@@ -7,9 +7,13 @@ import ImageWithFallback from "../../components/ui/ImageWithFallback";
 import UserDetails from "../../components/profile/UserDetails";
 import { useAuth } from "../../context/AuthContext";
 import DropdownAvatar from "../../components/ui/DropdownAvatar";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { api } from "../../context/AuthContext";
 import IPost from "../../interfaces/Post";
+
+interface IContent<T> {
+  content: T;
+}
 
 
 const { VITE_BACKEND_URL } = import.meta.env;
@@ -18,23 +22,24 @@ function Profile() {
   const [loading, setLoading] = useState(true);
 
   //state for all posts
-  const [posts, setPosts] = useState<IPost | null>(null);
+  const [posts, setPosts] = useState<IPost[]>([]);
 
   const { user, profile, logout } = useAuth();
 
   useEffect(() => {
-    //console.log(localStorage.getItem("ACCESS_TOKEN"));
-    console.log(profile);
     api
-      .get<IPost[]>(`/post/all/${profile?.id}`, {
+      .get<IContent<IPost[]>>(`/post/all/${profile && profile.id}`, {
       })
       .then((response) => {
-        console.log(response.data);
+        setPosts(response.data.content);
+        console.log("posts", posts)
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((error: AxiosError) => {
+        console.log("ERRORE DEL CAZZO", error);
       });
   }, [profile]);
+
+
 
   return (
     <div>
@@ -58,6 +63,7 @@ function Profile() {
               <ImageWithFallback imgUrl={faker.image.url()} />
             </div>
           ))} */}
+          { posts?.length === 0 && <p>No posts yet</p> }
         </div>
       </section>
 
