@@ -64,6 +64,15 @@ function Profile() {
             </div>
           ))} */}
           { posts?.length === 0 && <p>No posts yet</p> }
+          { posts?.map((post, index) => (
+            <div key={index} className="p-3 lg:p-4 drop-shadow-md">
+              
+              <div>
+                <h2 className="text-xl font-bold">{post.title}</h2>
+                <p>{post.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
