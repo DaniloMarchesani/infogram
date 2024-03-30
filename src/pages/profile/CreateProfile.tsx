@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { TCreateProfileSchema, createProfileSchema } from "../../lib/validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -278,9 +279,12 @@ function CreateProfile({ profile, id }: { profile: string, id: number }) {
               </div>
             )}
           </div>
-          <div className="flex items-center justify-center mt-10">
+          <div className="flex items-center justify-center mt-10 gap-4">
             <Button color="primary" size="lg" type="submit">
               Create Profile
+            </Button>
+            <Button color="secondary" size="lg">
+              <Link to={"/profile"}>Back to profile</Link>
             </Button>
           </div>
         </form>

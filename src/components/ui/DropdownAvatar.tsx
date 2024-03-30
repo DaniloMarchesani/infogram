@@ -10,6 +10,7 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import { useAuth } from "../../context/AuthContext";
+import { Link, NavLink } from "react-router-dom";
 
 const { VITE_BASE_BACKEND_URL } = import.meta.env;
 
@@ -35,7 +36,7 @@ function DropdownAvatar() {
         </DropdownTrigger>
       </Suspense>
       <DropdownMenu aria-label="Static Actions">
-        <DropdownItem key="edit">Edit Profile</DropdownItem>
+        <DropdownItem key="edit"><Link to={"/profile/create"}>Edit Profile</Link></DropdownItem>
         <DropdownItem key="settings">Settings</DropdownItem>
         <DropdownItem key="Logout" className="text-danger" color="danger" onClick={() => logout() }>
           Logout

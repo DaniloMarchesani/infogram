@@ -54,7 +54,7 @@ function Profile() {
           </div>
         </nav>
       </header>
-      //FIXME: fixing the get followers and following
+      {/* //FIXME: fixing the get followers and following */}
       {user && profile && <UserDetails user={user} profile={profile} postsCounter={posts.length} />}
 
       <section className="flex flex-col items-center justify-center container mx-auto p-24">

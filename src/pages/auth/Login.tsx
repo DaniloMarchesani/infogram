@@ -1,5 +1,5 @@
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { Button, Input, divider } from "@nextui-org/react";
+import { Button, ButtonGroup, Input, divider, useDisclosure } from "@nextui-org/react";
 import { Eye, EyeOff, XCircle } from "lucide-react";
 import { useState } from "react";
 import { TLoginSchema, loginSchema } from "../../lib/validator";
@@ -10,11 +10,14 @@ import axios from "axios";
 import IUser from "../../interfaces/User";
 import IProfile from "../../interfaces/Profile";
 import { useAuth } from "../../context/AuthContext";
+import { useModal } from "../../context/ModalContext";
 
 function Login() {
   //state for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const { setProfile, setAsLogged} = useAuth();
+
+  const { openModal} = useModal();
 
   const navigate = useNavigate();
 
