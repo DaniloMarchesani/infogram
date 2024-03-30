@@ -32,11 +32,12 @@ function Profile() {
       })
       .then((response) => {
         setPosts(response.data.content);
-        console.log("posts", posts)
       })
       .catch((error: AxiosError) => {
         console.log("ERRORE DEL CAZZO", error);
       });
+
+  
   }, [profile]);
 
 
@@ -53,17 +54,18 @@ function Profile() {
           </div>
         </nav>
       </header>
-
-      {user && profile && <UserDetails user={user} profile={profile} />}
+      //FIXME: fixing the get followers and following
+      {user && profile && <UserDetails user={user} profile={profile} postsCounter={posts.length} />}
 
       <section className="flex flex-col items-center justify-center container mx-auto p-24">
+      { posts?.length === 0 && <div className="bg-content1 text-center flex items-center justify-center p-10 rounded-3xl"><p>This user has no posts yet!</p></div> }
         <div className="grid lg:grid-cols-3 md:grid-cols-2">
           {/* {Array.from({ length: 9 }).map((_, index) => (
             <div key={index} className="p-3 lg:p-4 drop-shadow-md">
               <ImageWithFallback imgUrl={faker.image.url()} />
             </div>
           ))} */}
-          { posts?.length === 0 && <p>No posts yet</p> }
+          
           { posts?.map((post, index) => (
             <div key={index} className="p-3 lg:p-4 drop-shadow-md">
               

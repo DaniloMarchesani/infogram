@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 
 export interface ThemeContextProps {
   theme: string;
@@ -12,8 +12,27 @@ const ThemeContext = createContext({
 });
 
 function ThemeProvider({ children }: { children: ReactNode }) {
+
+
   const [theme, setTheme] = useState("light");
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
+
+  useEffect(() => {
+    const checkSystemTheme = () => {
+      if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme("dark")
+      } else {
+        setTheme("light")
+      }
+    };
+
+    checkSystemTheme();
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', checkSystemTheme);
+
+  }, []);
+
+ 
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

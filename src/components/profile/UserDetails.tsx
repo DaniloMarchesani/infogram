@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import IUser from "../../interfaces/User";
 import IProfile from "../../interfaces/Profile";
 import axios from "axios";
+import { api } from "../../context/AuthContext";
+import { set } from "react-hook-form";
 
-const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
+const UserDetails = ({user, profile, postsCounter}: { user: IUser, profile: IProfile, postsCounter: number}) => {
 
     /* const {
         state: { posts },
@@ -15,7 +17,41 @@ const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
     //const { openModal } = useModal();
     const [isFollowing, setIsFollowing] = useState(0);
     const [isFollowed, setIsFollowed] = useState(0);
-    const { VITE_BACKEND_URL } = import.meta.env;
+    const [postCounter, setPostCounter] = useState(0);   
+    const { VITE_BASE_BACKEND_URL } = import.meta.env;
+
+    useEffect(() => {
+        setPostCounter(postsCounter);
+        //GET THE NUMBER OF FOLLOWERS
+        api.get(`/follower/follower/${profile.id}`)
+            .then(resp => {
+                if(resp.status === 404) {
+                    setIsFollowed(isFollowed);
+                }
+                setIsFollowed(resp.data.length);
+                console.log("followers: ", resp.data.length)
+
+            }).catch(err => {
+                console.log("user not followed")
+            }
+        )
+        
+        //GET THE NUMBER OF FOLLOWING
+        api.get(`/follower/following/${profile.id}`)
+            .then(resp => {
+                if(resp.status === 404) {
+                    setIsFollowing(isFollowing);
+                }
+                setIsFollowing(resp.data.length);
+                console.log("following: ", resp.data.length)
+
+            }).catch(err => {
+                console.log("user not following")
+            }
+        )
+
+        
+    }, [isFollowed, isFollowing, postCounter]);
 
 
     return (
@@ -27,7 +63,7 @@ const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
                             isBordered
                             as="button"
                             className="transition-transform w-18 h-18 sm:w-24 sm:h-24"
-                            src={"http://localhost:8080/images" + profile.avatarUrl}
+                            src={`${VITE_BASE_BACKEND_URL}images` + profile.avatarUrl}
                             showFallback
                             fallback={<UserCircleIcon className="size-20 text-gray-100" />}
                         />
@@ -39,18 +75,18 @@ const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
                             <div className="flex gap-3">
                                 <div className="flex flex-col">
                                     <span>Followers</span>
-                                    <strong className="text-xl font-bold">1200</strong>
+                                    <strong className="text-xl font-bold">{isFollowed}</strong>
                                 </div>
                                 <div className="bg-base-content w-[1px]"></div>
                                 <div className="flex flex-col">
                                     <span>Following</span>
-                                    <strong className="text-xl font-bold">500</strong>
+                                    <strong className="text-xl font-bold">{isFollowing}</strong>
                                 </div>
                                 <div className="bg-base-content w-[1px]"></div>
                                 <div className="flex flex-col">
                                     <span>Posts</span>
                                     {/* <strong className="text-xl font-bold">{posts?.length}</strong> */}
-                                    <strong className="text-xl font-bold">0</strong>
+                                    <strong className="text-xl font-bold">{postCounter}</strong>
                                 </div>
                             </div>
                         </div>
@@ -96,16 +132,6 @@ const UserDetails = ({user, profile}: { user: IUser, profile: IProfile}) => {
                 )} */}
             </div>
 
-            {/* Full name and bio */}
-            {/* {user && (
-                <div className="w-full flex flex-col gap-2">
-                    <strong>{`${profile?.firstName} ${profile?.lastName}`}</strong>
-                    <p
-                        dangerouslySetInnerHTML={{
-                            __html: profile?.bio || "",
-                        }}></p>
-                </div>
-            )} */}
         </div>
     );
 };
