@@ -9,7 +9,6 @@ import {
   Skeleton,
   Avatar,
 } from "@nextui-org/react";
-import { faker } from "@faker-js/faker";
 import { useAuth } from "../../context/AuthContext";
 
 const { VITE_BASE_BACKEND_URL } = import.meta.env;

@@ -42,7 +42,7 @@ function Profile() {
 
 
   return (
-    <div>
+    <div className="  min-h-screen ">
       <header>
         <nav className="flex justify-around items-center">
           <Logo />
@@ -75,10 +75,6 @@ function Profile() {
           ))}
         </div>
       </section>
-
-      <footer className="flex items-center justify-center">
-        <p>@Instabasic Made with love by me</p>
-      </footer>
     </div>
   );
 }
